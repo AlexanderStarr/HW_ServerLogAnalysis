@@ -2,14 +2,15 @@
 
 from mrjob.job import MRJob
 from mrjob.step import MRStep
+import datetime as dt
 
 class Apache(MRJob):
 
     def mapper(self, _, line):
-        line_elems = line.split()
-        client = line_elems[0]
-        time = line_elems[3]
-        yield (client, time)
+        client = line.split()[0]
+        time_stamp = line.split('[')[1].split(']')[0]
+        unix_time = time_stamp
+        yield (client, time_stamp)
 
     def reducer(self, client, timevector):
         yield (client, len(list(timevector)))
