@@ -1,0 +1,4 @@
+Written by Alexander Starr in Python 2.7.5
+
+Assignment is to identify the maximum average length of time between requests from a client.  This is done using mrjob to process Apache server logs.
+
