@@ -21,14 +21,15 @@ class Apache(MRJob):
         yield (client, timestamp)
 
     def reducer1(self, client, timevector):
-        s_times = sorted(list(timevector))
-        stlen = len(s_times)
+        times = list(timevector)
+        stlen = len(times)
         if stlen == 1:
+            # Time deltas can't be calculated for only one request.
             return
-        time_total = 0.0
-        for i in range(1, stlen):
-            time_total += s_times[i] - s_times[i-1]
-        avetime = time_total / float(stlen)
+        # The total time between visits is just the max minus the min.
+        # The avetime is the total divided by the len minus one (since we 
+        # are looking at the average time between visits).
+        avetime = (max(times) - min(times)) / float(stlen - 1)
         yield (client, avetime)
 
     def mapper2(self, client, avetime):
